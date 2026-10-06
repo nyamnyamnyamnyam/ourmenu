@@ -1,3 +1,5 @@
+import { motion } from 'motion/react'
+
 export function MenuButtons({
   categories,
   activeCategory,
@@ -6,9 +8,11 @@ export function MenuButtons({
   return (
     <div className="flex flex-wrap justify-center gap-2 py-4">
       {categories.map((category) => (
-        <button
+        <motion.button
           key={category}
           type="button"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1.2 }}
           onClick={() => onCategoryChange(category)}
           className={`rounded-lg border px-4 py-2 capitalize transition-colors ${
             activeCategory === category
@@ -17,7 +21,7 @@ export function MenuButtons({
           }`}
         >
           {category}
-        </button>
+        </motion.button>
       ))}
     </div>
   )
