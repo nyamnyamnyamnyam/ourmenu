@@ -1,16 +1,23 @@
-export function MenuList({ menu }) {
+export function MenuList({ menu, onImageClick }) {
   return (
     <div className="flex flex-wrap gap-4">
       {menu.map(({ id, title, price, img, desc }) => (
-        <article
-          key={id}
-          className="flex basis-full flex-col gap-4 rounded-2xl border border-blue-900 p-2 brp500:flex-row brp900:basis-[calc(50%-20px)]"
-        >
+        <div key={id} className="flex basis-full flex-col gap-4 rounded-2xl border border-blue-900 p-2 brp500:flex-row brp900:basis-[calc(50%-20px)]">
+        
           <div className="flex-1">
             <img
               className="h-48 w-full rounded-2xl object-cover"
               src={`/images/${img}`}
               alt={title}
+              onClick={() => onImageClick({ title, img })}
+              role="button"
+              tabIndex="0"
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  onImageClick({ title, img })
+                }
+              }}
             />
           </div>
 
@@ -29,7 +36,7 @@ export function MenuList({ menu }) {
               {desc}
             </p>
           </div>
-        </article>
+        </div>
       ))}
     </div>
   )

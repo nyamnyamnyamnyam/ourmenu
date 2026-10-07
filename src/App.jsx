@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { MenuList } from './components/MenuList'
+import MyModal from './components/MyModal'
 import MyHeader from './components/MyHeader'
 import { foods } from './data'
 import { getAllCategories } from './utils'
@@ -10,6 +11,18 @@ const categories = getAllCategories()
 function App() {
   const [menu, setMenu] = useState(foods)
   const [activeCategory, setActiveCategory] = useState('all')
+  const [selectedFood, setSelectedFood] = useState(null)
+
+  useEffect(() => {
+    const closeWithEscape = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedFood(null)
+      }
+    }
+
+    window.addEventListener('keydown', closeWithEscape)
+    return () => window.removeEventListener('keydown', closeWithEscape)
+  }, [])
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category)
@@ -31,8 +44,10 @@ function App() {
       />
 
       <main className="m-auto max-w-300 p-4 shadow-2xl">
-        <MenuList menu={menu} />
+        <MenuList menu={menu} onImageClick={setSelectedFood} />
       </main>
+
+      <MyModal food={selectedFood} onClose={() => setSelectedFood(null)} />
     </div>
   )
 }
